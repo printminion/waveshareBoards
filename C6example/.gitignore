@@ -1,0 +1,37 @@
+# Build files
+*.o
+*.d
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+
+# Arduino build directory
+build/
+
+# IDE specific files
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# SquareLine Studio autosave and backup
+autosave/
+backup/
+cache/
+
+# Logs
+*.log
+inols*.log
+
+# Keep only source files for fonts and images
+assets/*.bin
+assets/*.fcfg
+
+# CMake build files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
