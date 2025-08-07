@@ -1,3 +1,10 @@
+/**
+  Please read README.md file in this folder, or on the web: https://github.com/printminion/waveshareBoards/tree/main/C6example
+  Note: This sketch takes up a lot of space for the app and may not be able to flash with default setting on some chips.
+  If you see Error like this: "Sketch too big"
+  In Arduino IDE go to: Tools > Partition scheme > chose anything that has more than 1.4MB APP
+   - for example "No OTA (2MB APP/2MB FATFS)"
+*/
 #include "Display_ST7789.h"
 #include "LVGL_Driver.h"
 #include "RGB_lamp.h"
