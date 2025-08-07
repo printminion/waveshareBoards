@@ -48,15 +48,35 @@ void setTime()
 void setup()
 {       
   Serial.begin(115200);
-  LCD_Init();
-  Lvgl_Init();
-  Set_Backlight(10);
-  Set_Color(200, 200, 2);
-  ui_init();
-
-   connectWifi();
-   setTime();
   
+  // Initialize display and show initial message
+  LCD_Init();
+  LCD_Clear(COLOR_BLACK);
+  Set_Backlight(10);
+  LCD_ShowStatusMessage("Display initialized...");
+  delay(500);
+  
+  LCD_ShowStatusMessage("Initializing LVGL...");
+  Lvgl_Init();
+  delay(500);
+  
+  LCD_ShowStatusMessage("Setting up RGB lamp...");
+  Set_Color(200, 200, 2);
+  delay(500);
+  
+  LCD_ShowStatusMessage("Initializing UI...");
+  ui_init();
+  delay(500);
+  
+  LCD_ShowStatusMessage("Connecting to WiFi...");
+  connectWifi();
+  
+  LCD_ShowStatusMessage("Setting time...");
+  setTime();
+  delay(500);
+  
+  LCD_ShowStatusMessage("Setup complete!");
+  delay(1000);
 }
 
 void loop()
