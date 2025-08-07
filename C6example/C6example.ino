@@ -42,19 +42,24 @@ void connectWifi()
     unsigned long timeout = 60000; // 1 minute timeout
     
     while (WiFi.status() != WL_CONNECTED && (millis() - startTime) < timeout) {
+        // Calculate remaining time
+        unsigned long elapsed = millis() - startTime;
+        unsigned long remaining = timeout - elapsed;
+        int secondsLeft = remaining / 1000;
+        
         // Create blinking dots effect
         String dotsStr = "";
         for(int i = 0; i < dots; i++) {
             dotsStr += ".";
         }
         
-        String currentMsg = statusMsg + dotsStr;
+        String currentMsg = statusMsg + dotsStr + " (" + String(secondsLeft) + "s)";
         LCD_UpdateStatusMessage(currentMsg.c_str(), animationY);
         
         dots = (dots + 1) % 4; // Cycle through 0, 1, 2, 3 dots
         delay(500);
         
-        Serial.println("Connecting to WiFi...");
+        Serial.println("Connecting to WiFi... " + String(secondsLeft) + "s left");
     }
     
     if (WiFi.status() == WL_CONNECTED) {
