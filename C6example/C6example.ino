@@ -38,7 +38,10 @@ void connectWifi()
     String statusMsg = "Connecting";
     uint16_t animationY = 20 + 12 * 5; // Calculate Y position (5th message line)
     
-    while (WiFi.status() != WL_CONNECTED) {
+    unsigned long startTime = millis();
+    unsigned long timeout = 60000; // 1 minute timeout
+    
+    while (WiFi.status() != WL_CONNECTED && (millis() - startTime) < timeout) {
         // Create blinking dots effect
         String dotsStr = "";
         for(int i = 0; i < dots; i++) {
@@ -54,17 +57,28 @@ void connectWifi()
         Serial.println("Connecting to WiFi...");
     }
     
-    LCD_UpdateStatusMessage("WiFi connected!", animationY);
-    Serial.println("WiFi connected!");
+    if (WiFi.status() == WL_CONNECTED) {
+        LCD_UpdateStatusMessage("WiFi connected!", animationY);
+        Serial.println("WiFi connected!");
+    } else {
+        LCD_UpdateStatusMessage("Give up on WiFi", animationY);
+        Serial.println("WiFi connection timeout - proceeding without WiFi");
+    }
     delay(500);
 }
 
 void setTime()
 {
-  configTime(3600*zone, 0, ntpServer);
-  struct tm timeinfo;
-  if (getLocalTime(&timeinfo)){
-    rtc.setTimeStruct(timeinfo); 
+  if (WiFi.status() == WL_CONNECTED) {
+    configTime(3600*zone, 0, ntpServer);
+    struct tm timeinfo;
+    if (getLocalTime(&timeinfo)){
+      rtc.setTimeStruct(timeinfo); 
+    }
+  } else {
+    // Set a default time if no WiFi
+    rtc.setTime(0, 0, 12, 1, 1, 2024); // 12:00:00, Jan 1, 2024
+    Serial.println("No WiFi - using default time");
   }
 }
 
