@@ -439,6 +439,17 @@ void LCD_ShowStatusMessage(const char* message) {
     }
 }
 
+void LCD_UpdateStatusMessage(const char* message, uint16_t y_position) {
+    // Clear the specific line area
+    LCD_SetCursor(10, y_position, LCD_WIDTH - 10, y_position + 8);
+    for (int i = 0; i < (LCD_WIDTH - 20) * 9; i++) {
+        LCD_WriteData_Word(COLOR_BLACK);
+    }
+    
+    // Draw the updated message at the same position
+    LCD_DrawString(10, y_position, message, COLOR_WHITE);
+}
+
 
 
 

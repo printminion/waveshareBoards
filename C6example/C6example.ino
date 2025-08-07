@@ -27,12 +27,36 @@ int n=0;
 
 void connectWifi()
 { 
+    // Show which network we're trying to connect to
+    String connectMsg = "Connecting to WiFi: \"" + ssid + "\"";
+    LCD_ShowStatusMessage(connectMsg.c_str());
+    delay(500);
+    
     WiFi.begin(ssid, password);
+    
+    int dots = 0;
+    String statusMsg = "Connecting";
+    uint16_t animationY = 20 + 12 * 5; // Calculate Y position (5th message line)
+    
     while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Can't connect to wifi!");
-  }
-  Serial.println("conected");
+        // Create blinking dots effect
+        String dotsStr = "";
+        for(int i = 0; i < dots; i++) {
+            dotsStr += ".";
+        }
+        
+        String currentMsg = statusMsg + dotsStr;
+        LCD_UpdateStatusMessage(currentMsg.c_str(), animationY);
+        
+        dots = (dots + 1) % 4; // Cycle through 0, 1, 2, 3 dots
+        delay(500);
+        
+        Serial.println("Connecting to WiFi...");
+    }
+    
+    LCD_UpdateStatusMessage("WiFi connected!", animationY);
+    Serial.println("WiFi connected!");
+    delay(500);
 }
 
 void setTime()
@@ -60,7 +84,7 @@ void setup()
   Lvgl_Init();
   delay(500);
   
-  LCD_ShowStatusMessage("Setting up RGB lamp...");
+  LCD_ShowStatusMessage("Setting up RGB LEDs...");
   Set_Color(200, 200, 2);
   delay(500);
   
@@ -68,7 +92,7 @@ void setup()
   ui_init();
   delay(500);
   
-  LCD_ShowStatusMessage("Connecting to WiFi...");
+  // WiFi connection will show its own detailed status
   connectWifi();
   
   LCD_ShowStatusMessage("Setting time...");

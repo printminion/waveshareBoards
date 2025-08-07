@@ -37,3 +37,4 @@ void LCD_DrawChar(uint16_t x, uint16_t y, char ch, uint16_t color);
 void LCD_DrawString(uint16_t x, uint16_t y, const char* str, uint16_t color);
 void LCD_Clear(uint16_t color);
 void LCD_ShowStatusMessage(const char* message);
+void LCD_UpdateStatusMessage(const char* message, uint16_t y_position);
